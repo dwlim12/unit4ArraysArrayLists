@@ -23,7 +23,7 @@ public class Radar
     private double noiseFraction;
     
     // number of scans of the radar since construction
-    private int numScans;
+    public int numScans;
 
     /**
      * Constructor for objects of class Radar
@@ -34,8 +34,8 @@ public class Radar
     public Radar(int rows, int cols)
     {
         // initialize the currentScan 2D array and the accumulator 2D array
-        
-        
+        this.currentScan = new boolean[rows][cols];
+        this.accumulator = new int[rows][cols];
         //
         // !!! add code here !!!
         //
@@ -66,9 +66,31 @@ public class Radar
         
         //
         // !!! add code here !!!
-        //
-        
-        
+        // 1.
+        for (int i = 0; i < this.currentScan.length; i++)
+        {
+            for (int j = 0; j < this.currentScan[i].length; j++)
+            {
+                this.currentScan[i][j] = false;
+            }
+        }
+        // 2.
+        this.setMonsterLocation(monsterLocationRow,monsterLocationCol);
+        // 3.
+        this.injectNoise();
+        // 4.
+        for (int i = 0; i < this.currentScan.length; i++)
+        {
+            for (int j = 0; j < this.currentScan[i].length; j++)
+            {
+                if (this.currentScan[i][j] == true)
+                {
+                    this.accumulator[i][j] += 1;
+                }
+            }
+        }
+        // 5.
+        this.numScans++;
     }
 
     /**
@@ -159,7 +181,7 @@ public class Radar
      * Sets cells as falsely triggering detection based on the specified probability
      * 
      */
-    private void injectNoise()
+    public void injectNoise()
     {
         // Iterate through all cells in the currentScan 2D array to inject noise by setting false positives.
         // The noiseFraction instance variable is the probability that a given cell will be
@@ -170,7 +192,17 @@ public class Radar
         //
         // !!! add code here !!!
         //
-        
+        for (int i = 0; i < this.currentScan.length; i++)
+        {
+            for (int j = 0; j < this.currentScan[i].length; j++)
+            {
+                double fP = Math.random();
+                if (fP <= this.noiseFraction)
+                {
+                    this.currentScan[i][j] = true;
+                }
+            }
+        }
         
     }
     

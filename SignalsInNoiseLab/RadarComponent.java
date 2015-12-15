@@ -59,7 +59,7 @@ public class RadarComponent extends JComponent
         Graphics2D g2 = (Graphics2D) g;
         
         // cool radar-looking colors
-        final Color DETECTED_COLOR = new Color(184, 254, 183);
+        final Color DETECTED_COLOR = new Color(255, 0, 255);
         final Color UNDETECTED_COLOR = new Color(6, 63, 3);
         
         // draw the image for the current scan of the radar

@@ -1,5 +1,5 @@
 
-
+import java.util.Scanner;
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -43,21 +43,63 @@ public class RadarTest
     public void tearDown()
     {
     }
-    
+    
+
     @Test
-    public void testMonsterLocation(int row, int col)
+    public void testMonsterLocation()
     {
+        //set row and col of monster, run scan, see if row and col are what it was set to
         Radar radar = new Radar(100,100);
-        radar.setMonsterLocation(row,col);
-        radar.injectNoise();
-        if (radar.getAccumulatedDetection(row,col) != radar.numScans)
+        int monsterLocationRow = (int)(Math.random() * 100);
+        int monsterLocationCol = (int)(Math.random() * 100);
+        radar.setMonsterLocation(monsterLocationRow,monsterLocationCol);
+        radar.setNoiseFraction(0.10);
+        for (int i = 0; i < 100; i++)
         {
-            assertEquals("expected int at (" + row + "," + col + ") equal to numScans",radar.numScans);
+            radar.scan();
         }
-        //else if(radar.getAccumulatedDetection(row - 1,col - 1) = 10000)
-        //{
-        //    assertNotEquals("expected int at (" + (row-1) + "," + (col-1) + ") not 10000",10000);
-        //}
+        int highest_detection = 0;
+        int highest_row = 0;
+        int highest_col = 0;
+        for (int i = 0; i < 100; i++)
+        {
+            for (int j = 0; j < 100; j++)
+            {
+                int detection = accumulator[i][j];
+                if (detection > highest_detection)
+                {
+                    highest_row = i;
+                    highest_col = j;
+                    highest_detection = detection;
+                }
+            }
+        }
+        
+    }
+    
+    @Test
+    public void testAccumulator()
+    {
+        //set monster location, run scan once, see if the accumulator added 1 to all detected locations
+        Radar radar = new Radar(100,100);
+        int monsterLocationRow = (int)(Math.random() * 100);
+        int monsterLocationCol = (int)(Math.random() * 100);
+        radar.setMonsterLocation(monsterLocationRow,monsterLocationCol);
+        radar.setNoiseFraction(0.10);
+        radar.scan();
+        for (int i = 0; i < 100; i++)
+        {
+            for (int j = 0; j < 100; j++)
+            {
+                if (radar.isDetected(i,j) == true)
+                {
+                    if (radar.getAccumulatedDetection(i,j) != 1)
+                    {
+                        assertEquals(1,radar.getAccumulatedDetection(i,j));
+                    }
+                }
+            }
+        }
     }
 
 

@@ -13,8 +13,6 @@ import org.junit.Test;
  */
 public class RadarTest
 {
-    /** description of instance variable x (add comment for each instance variable) */
-    private int x;
 
     /**
      * Default constructor for objects of class RadarTest
@@ -65,7 +63,7 @@ public class RadarTest
         {
             for (int j = 0; j < 100; j++)
             {
-                int detection = accumulator[i][j];
+                int detection = radar.getAccumulatedDetection(i,j);
                 if (detection > highest_detection)
                 {
                     highest_row = i;
@@ -74,6 +72,10 @@ public class RadarTest
                 }
             }
         }
+        int correct_detection = radar.getAccumulatedDetection(monsterLocationRow,monsterLocationCol);
+        assertEquals(correct_detection,highest_detection);
+        assertEquals(monsterLocationRow,highest_row);
+        assertEquals(monsterLocationCol,highest_col);
         
     }
     
